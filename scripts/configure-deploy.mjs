@@ -17,12 +17,20 @@ function official(tag) {
   if (!digest || !info.includes(`Platform:    ${platform}`)) throw new Error('Official image/platform could not be verified')
   return verifyRegistry(tag + '@' + digest)
 }
-function git(args) { try { return execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() } catch { return undefined } }
+function git(args) {
+  try {
+    const options = { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
+    // An extracted release may live inside another checkout. Only trust this repository's inventory.
+    if (resolve(execFileSync('git', ['rev-parse', '--show-toplevel'], options).trim()) !== root) return undefined
+    return execFileSync('git', args, options).trim()
+  } catch { return undefined }
+}
 function buildInputs() {
   const listing = git(['ls-files', '--cached', '--others', '--exclude-standard'])
   const files = listing === undefined ? JSON.parse(readFileSync(resolve(root, 'manifest.json'), 'utf8')).buildSources : listing.split('\n')
   if (!Array.isArray(files)) throw new Error('Candidate manifest is missing build source inventory')
   const inputs = files.filter(path => /^(?:Dockerfile|\.dockerignore|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|tsconfig\.json)$/.test(path) || /^packages\/(plugin|relay|web|protocol)\/(src\/.*\.(ts|tsx|css|sql)|package\.json|tsdown\.config\.ts|vite\.config\.ts|build\.mjs|index\.html|cordis\.patch\.yml)$/.test(path)).sort()
+  if (!inputs.length) throw new Error('Build source inventory is empty')
   return { algorithm: 'sha256', digest: createHash('sha256').update(inputs.map(path => path + '\0' + createHash('sha256').update(readFileSync(resolve(root, path))).digest('hex')).join('\n')).digest('hex'), files: inputs.length }
 }
 if (check) {
