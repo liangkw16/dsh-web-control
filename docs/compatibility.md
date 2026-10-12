@@ -18,4 +18,4 @@
 
 锁屏与休眠不同：仅锁屏不主动停用插件；电脑休眠、断网、退出 DSH 后无法维持正常远控。睡眠恢复和真实手机的长期后台行为应在自己的设备上验证。
 
-首版沿用此前部署验证过的 compat.11 功能；公开版本重新构建并执行发布检查，具体数量、平台和制品哈希以 [Release](https://github.com/liangkw16/dsh-web-control/releases/tag/v0.1.0) 的 manifest 为准。历史测试不等于对任意未来 DSH 版本的保证。
+首版沿用此前部署验证过的 compat.11 功能；公开版本重新构建并执行发布检查。具体测试数量与平台见 [Release notes](https://github.com/liangkw16/dsh-web-control/releases/tag/v0.1.0)，制品哈希见其 manifest。历史测试不等于对任意未来 DSH 版本的保证。

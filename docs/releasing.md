@@ -34,7 +34,7 @@ pnpm test:parity
 pnpm package:release --inputs data/native-inputs --output dist/public-release
 ```
 
-The package command requires a completed build and refuses to overwrite its output directory. It verifies original resources and newly built plugin imports, assembles a native UI deployment kit, retains third-party notices and creates checksums. Do not call a packaging manifest a test pass: record the commands actually run in release notes.
+The package command requires a completed build and refuses to overwrite its output directory. Run it after browser tests finish: those tests rebuild the plugin and must not run concurrently with packaging. It verifies original resources and newly built plugin imports, assembles a native UI deployment kit, retains third-party notices and creates checksums. Do not call a packaging manifest a test pass: record the commands actually run in release notes.
 
 Outputs:
 
@@ -47,5 +47,14 @@ Outputs:
 | `SHA256SUMS` | Download integrity checks |
 
 Test the extracted deployment kit, not only the working tree. Build a target Linux image and verify SQLite startup, `/health/ready`, UI resource integrity and a native control flow with an owned Host. Save private raw logs locally; publish only sanitized verification summaries. The historical `scripts/task*`, `acceptance*` and `native-ui-release` pipelines remain audit/regression tooling for earlier sealed private candidates, not instructions to redeploy a personal server.
+
+After running the deployment kit's `configure-deploy.mjs`, the dedicated public release smoke binds its image identity to the release archives, checks all native assets through an isolated TLS proxy, and exercises the original UI, preview/download and page takeover while a synthetic local task runs:
+
+```sh
+node scripts/smoke-public-release.mjs --release dist/public-release \
+  --image-lock /path/to/extracted-kit/deploy/images.lock.json
+```
+
+It uses the isolated stock runtime prepared above. Its temporary self-signed certificate is trusted only inside this test; do not copy that certificate setup into production. The test removes its own containers and stops its own Host, without connecting to a user profile.
 
 Create a GitHub tag matching the plugin version, publish release notes and upload only the allowlisted artifacts above. Verify public downloads against local checksums. Keep tags/assets immutable; fixes get a new patch release. Update `CHANGELOG.md`, compatibility notes and the package's versioned Host entry together. No release operation should restart the user's DSH or replace an existing Relay automatically.
