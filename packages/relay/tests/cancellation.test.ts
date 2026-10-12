@@ -597,14 +597,15 @@ test('cancel before opener dispatch suppresses both queued opener and its cancel
       watch: { topic: 'workspaces' },
     })
     await h.next('watch')
-    b.send({
-      v: 1,
-      type: 'call',
-      id: op,
-      fence,
-      command: { op: 'session.list', workspaceId: 'w' },
-    })
-    b.send({ v: 1, type: 'cancel', id: op, fence })
+    // Deliver both frames in one loopback TCP write. Separate writes can let the
+    // Relay legitimately dispatch the opener before cancel arrives under load.
+    const socket = (b.ws as unknown as { _socket: import('node:net').Socket })._socket
+    socket.cork()
+    try {
+      b.send({ v: 1, type: 'call', id: op, fence,
+        command: { op: 'session.list', workspaceId: 'w' } })
+      b.send({ v: 1, type: 'cancel', id: op, fence })
+    } finally { socket.uncork() }
     await delay(25)
     expect(h.messages.some((m) => m.id === op)).toBe(false)
     h.send({ v: 1, type: 'event', id: keep, fence, value: 'alive' })

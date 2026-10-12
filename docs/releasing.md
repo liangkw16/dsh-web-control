@@ -25,7 +25,7 @@ pnpm install --frozen-lockfile
 pnpm build
 pnpm typecheck
 pnpm test
-python3 -m unittest discover -s tests/compat -p '*test.py'
+python3 tests/compat/native-ui-remote.test.py
 pnpm exec playwright install chromium webkit
 # Requires the isolated stock runtime; never an actual user's DSH_HOME.
 pnpm test:native
