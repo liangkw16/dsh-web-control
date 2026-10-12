@@ -1,0 +1,4 @@
+# Credentials and enabled state live in the profile credential provider, never plugin settings.
+- insert:
+    - id: web-control
+      name: ./dist/host-0.1.0.js

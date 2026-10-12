@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test'
+export default defineConfig({testDir:'.',testMatch:'native-ui-core.spec.ts',timeout:60000,expect:{timeout:15000},workers:1,reporter:'list',outputDir:'../../data/native-ui/playwright-core',use:{actionTimeout:15000,browserName:'chromium',ignoreHTTPSErrors:true,launchOptions:{executablePath:process.env.WEB_CONTROL_CHROMIUM_EXECUTABLE,args:['--host-resolver-rules=MAP native-ui.test 127.0.0.1','--no-proxy-server']}}})

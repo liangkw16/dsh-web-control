@@ -1,0 +1,40 @@
+{
+  "name": "@dsh-web-control/relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/auth.js",
+    "./server": "./dist/server.js",
+    "./origin": "./dist/origin.js",
+    "./leases": "./dist/leases.js",
+    "./host-routes": "./dist/host-routes.js"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --target ES2024 --module NodeNext --moduleResolution NodeNext --allowImportingTsExtensions src/server.ts",
+    "test": "vitest run tests",
+    "build": "tsdown && node build.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "ws": "8.18.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "9.6.0",
+    "@types/ws": "8.18.1",
+    "@dsh-web-control/protocol": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangkw16/dsh-web-control.git",
+    "directory": "packages/relay"
+  },
+  "homepage": "https://github.com/liangkw16/dsh-web-control#readme",
+  "bugs": {
+    "url": "https://github.com/liangkw16/dsh-web-control/issues"
+  }
+}

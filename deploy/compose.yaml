@@ -1,0 +1,50 @@
+services:
+  relay-data-init:
+    image: ${RELAY_IMAGE:?run configure-deploy first}
+    user: "0:0"
+    entrypoint: [node, -e]
+    command: ["const fs=require('fs');fs.chownSync('/data',Number(process.env.RELAY_UID),Number(process.env.RELAY_GID));fs.chmodSync('/data',0o700)"]
+    environment:
+      RELAY_UID: ${RELAY_UID:?run configure-deploy first}
+      RELAY_GID: ${RELAY_GID:?run configure-deploy first}
+    volumes: [relay_data:/data]
+    read_only: true
+    network_mode: none
+    restart: "no"
+  relay:
+    image: ${RELAY_IMAGE:?run configure-deploy first}
+    user: "${RELAY_UID:?}:${RELAY_GID:?}"
+    environment:
+      HEARTBEAT_MS: ${HEARTBEAT_MS:-10000}
+      LEASE_TTL_MS: ${LEASE_TTL_MS:-30000}
+      BUFFERED_BYTES: ${BUFFERED_BYTES:-4194304}
+      MAX_CALLS: ${MAX_CALLS:-16}
+      MAX_STREAMS: ${MAX_STREAMS:-16}
+      MAX_UPLOADS: ${MAX_UPLOADS:-2}
+      PUBLIC_ORIGIN: https://${CONTROL_DOMAIN:?set control domain}
+      DATABASE_PATH: /data/relay.sqlite
+      ENROLLMENT_SECRET_FILE: /run/secrets/enrollment
+    volumes: [relay_data:/data]
+    secrets: [enrollment]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    stop_grace_period: 10s
+    depends_on:
+      relay-data-init: {condition: service_completed_successfully}
+  caddy:
+    image: ${CADDY_IMAGE:?run configure-deploy first}
+    ports: ["80:80", "443:443"]
+    environment: {CONTROL_DOMAIN: "${CONTROL_DOMAIN:?}"}
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy_data:/data", "caddy_config:/config"]
+    restart: unless-stopped
+    depends_on:
+      relay: {condition: service_healthy}
+secrets:
+  enrollment: {file: ./secrets/enrollment}
+volumes:
+  relay_data: {}
+  caddy_data: {}
+  caddy_config: {}

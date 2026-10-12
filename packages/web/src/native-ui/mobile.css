@@ -1,0 +1,27 @@
+/* Only remote-owned surfaces; stock cards and sidebar keep their original CSS. */
+#root[data-dsh-remote] {
+  box-sizing: border-box;
+  height: 100dvh;
+  min-height: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.dsh-remote-status {
+  pointer-events: none;
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: calc(100vw - 32px);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font: 12px system-ui;
+  color: var(--dsw-alias-text-secondary, #555);
+  background: var(--dsw-alias-bg-base, #f4f5f6);
+}
+.dsh-remote-status button { pointer-events: auto; }
+.dsh-remote-record { padding: 24px; overflow: auto; min-width: 0; }
+.dsh-remote-connected { padding: 10px 12px; color: var(--dsw-alias-label-tertiary); font: 12px system-ui; }

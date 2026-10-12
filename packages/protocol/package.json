@@ -1,0 +1,23 @@
+{
+  "name": "@dsh-web-control/protocol",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --target ES2024 --module NodeNext --moduleResolution NodeNext src/index.ts",
+    "test": "vitest run tests"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangkw16/dsh-web-control.git",
+    "directory": "packages/protocol"
+  },
+  "homepage": "https://github.com/liangkw16/dsh-web-control#readme",
+  "bugs": {
+    "url": "https://github.com/liangkw16/dsh-web-control/issues"
+  }
+}

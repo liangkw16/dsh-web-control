@@ -1,0 +1,1 @@
+export function cleanupNativeFixture(actions: { browser: () => Promise<unknown>; proxy: () => Promise<unknown>; host: () => Promise<unknown>; key: () => Promise<unknown> }): Promise<{ browserClosed: boolean; hostExited: boolean; proxyCleanup?: unknown; errors: { operation: string; name: string }[] }>;

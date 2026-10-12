@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": [
+      "node"
+    ],
+    "jsx": "react"
+  },
+  "include": [
+    "packages/plugin/src/**/*.ts",
+    "packages/plugin/tests/**/*.ts",
+    "packages/protocol/src/**/*.ts",
+    "packages/protocol/tests/**/*.ts",
+    "packages/relay/src/**/*.ts",
+    "packages/relay/tests/**/*.ts",
+    "packages/plugin/tsdown.config.ts",
+    "tests/compat/**/*.ts",
+    "packages/relay/tsdown.config.ts",
+    "tests/integration/relay-reconnect.test.ts",
+    "tests/integration/local-remote-approval.test.ts",
+    "tests/integration/file-scope.test.ts",
+    "packages/plugin/src/**/*.tsx",
+    "packages/web/src/**/*.ts",
+    "packages/web/tests/**/*.ts",
+    "packages/web/vite.config.ts",
+    "packages/web/src/**/*.tsx",
+    "tests/e2e/**/*.ts",
+    "tests/support/**/*.ts",
+    "playwright.config.ts",
+    "tests/support/**/*.tsx",
+    "tests/integration/**/*.ts"
+  ]
+}

@@ -1,0 +1,6 @@
+{$CONTROL_DOMAIN} {
+    header Referrer-Policy "no-referrer"
+    header X-Content-Type-Options "nosniff"
+    # No request access logging: credential headers, cookies and bodies stay private.
+    reverse_proxy relay:8787
+}

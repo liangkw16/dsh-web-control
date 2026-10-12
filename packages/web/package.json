@@ -1,0 +1,25 @@
+{
+  "name": "@dsh-web-control/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run tests"
+  },
+  "dependencies": {
+    "@dsh-web-control/protocol": "workspace:*",
+    "zod": "4.6.5"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangkw16/dsh-web-control.git",
+    "directory": "packages/web"
+  },
+  "homepage": "https://github.com/liangkw16/dsh-web-control#readme",
+  "bugs": {
+    "url": "https://github.com/liangkw16/dsh-web-control/issues"
+  }
+}

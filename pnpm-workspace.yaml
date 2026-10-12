@@ -1,0 +1,13 @@
+packages:
+  - packages/*
+autoInstallPeers: false
+minimumReleaseAgeExclude:
+  - playwright-core@1.64.0
+  - playwright@1.64.0
+  - '@playwright/test@1.64.0'
+# SQLite 13 ships Node-API binaries; explicitly block unnecessary native builds.
+allowBuilds:
+  better-sqlite3: false
+  # DSH's sandbox development dependency supplies platform binaries. The Relay
+  # does not use it; do not run its fallback native build during image assembly.
+  koffi: false

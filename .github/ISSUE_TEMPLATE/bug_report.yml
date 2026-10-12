@@ -1,0 +1,22 @@
+name: Bug report / 问题反馈
+description: Report a reproducible problem without secrets.
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include control links, credentials, private logs or session content. Security issues: use private vulnerability reporting."
+  - type: input
+    id: versions
+    attributes:
+      label: DSH / plugin / OS / browser versions
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps, expected result and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted error code or minimal diagnostics

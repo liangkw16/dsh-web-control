@@ -1,0 +1,29 @@
+# Read-only reference checkouts; the Web Control project is versioned separately.
+/deepseek-harness/
+/ZCode/
+/happy/
+
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+/data/
+/secrets/
+
+/deploy/secrets/
+
+# Local runtime and release materials
+/.superpowers/
+/release-input/
+/test-results/
+/playwright-report/
+/deploy/images.lock.json
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.pem
+*.key
+*-connection.json
