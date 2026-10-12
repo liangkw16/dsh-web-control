@@ -9,6 +9,7 @@ RUN pnpm --filter @dsh-web-control/relay build
 # Intentional legacy deploy: isolated production dependency tree; no injected workspace packages.
 RUN pnpm --filter @dsh-web-control/relay deploy --legacy --prod /out
 COPY release-input/web /out/public
+COPY LICENSE THIRD_PARTY_NOTICES.md /out/
 RUN node --input-type=module -e "import {verifyUiRelease} from '/out/dist/ui-assets.js'; await verifyUiRelease('/out/public')"
 RUN cd /out && node --input-type=module -e "import Database from 'better-sqlite3'; const db=new Database(':memory:'); console.log(JSON.stringify({node:process.version,platform:process.platform,arch:process.arch,sqlite:db.prepare('select sqlite_version() v').get().v})); db.close()"
 FROM ${NODE_IMAGE} AS runtime

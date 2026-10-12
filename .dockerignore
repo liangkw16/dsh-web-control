@@ -1,6 +1,8 @@
 # Default deny; no profiles, diagnostics, private dotenv or task state enters build.
 **
 !Dockerfile
+!LICENSE
+!THIRD_PARTY_NOTICES.md
 !package.json
 !pnpm-lock.yaml
 !pnpm-workspace.yaml

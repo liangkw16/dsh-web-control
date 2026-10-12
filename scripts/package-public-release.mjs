@@ -14,6 +14,7 @@ const pkg=JSON.parse(await readFile(join(root,'packages/plugin/package.json'),'u
 const pnpm=process.env.WEB_CONTROL_PNPM_CLI??join(root,'node_modules/pnpm/bin/pnpm.mjs')
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex')
 const run=(cmd,args)=>execFileSync(cmd,args,{cwd:root,stdio:'inherit'})
+await mkdir(dirname(output), { recursive: true })
 await mkdir(output) // Refuse to overwrite a previously published bundle.
 run(process.execPath,[pnpm,'--filter','dsh-web-control','pack','--pack-destination',output])
 await mkdir(join(output,'plugin'));await cp(join(root,'packages/plugin/dist'),join(output,'plugin/dist'),{recursive:true});await cp(join(root,'packages/plugin/package.json'),join(output,'plugin/package.json'))
