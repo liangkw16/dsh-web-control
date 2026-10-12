@@ -22,6 +22,6 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm --filter dsh-web-control pack --pack-destination ../../dist
+      - run: pnpm --filter dsh-web-control pack --pack-destination dist
       - run: pnpm check:package
       - run: python3 tests/compat/native-ui-remote.test.py
