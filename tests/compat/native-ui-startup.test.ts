@@ -1,12 +1,13 @@
 import { execFileSync } from 'node:child_process'
-import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
+import { mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash } from 'node:crypto'
 import { expect, test } from 'vitest'
 import { cspLoaderSource, inlineStyleHashes } from '../../scripts/native-ui-startup.mjs'
 
-const runtime=resolve('data/compat/runtime-0.2.0-rc.2')
+// Unit gates use pinned public dev dependencies; a full isolated DSH runtime is only needed by E2E.
+const runtime=resolve('.')
 test('stock spreadsheet JSX styles hash only literal template substitutions',()=>{
   const source='boot();const css=".sheet{color:red}"; const scoped=`@scope ([data-excel-preview]) { ${css} }`; jsx("style",{children:scoped}); jsx("style",{children:`${window.userCss}`})'
   expect(inlineStyleHashes(source)).toEqual(["'sha256-"+createHash('sha256').update('@scope ([data-excel-preview]) { .sheet{color:red} }').digest('base64')+"'"])
@@ -15,7 +16,8 @@ test('remote loader works with string compilation forbidden and rejects nested e
   const input=await readFile(join(runtime,'node_modules/@deepseek-ai/cordis-plugin-loader/lib/index.js'),'utf8')
   const dir=await mkdtemp(join(tmpdir(),'native-csp-loader-'))
   try{
-    await symlink(join(runtime,'node_modules'),join(dir,'node_modules'))
+    const loader=await realpath(join(runtime,'node_modules/@deepseek-ai/cordis-plugin-loader'))
+    await symlink(resolve(loader,'../..'),join(dir,'node_modules'))
     await writeFile(join(dir,'loader.mjs'),cspLoaderSource(input))
     await writeFile(join(dir,'test.mjs'),`import {interpolate,evaluate} from './loader.mjs';
       const clean=interpolate({}, {plugins:[{name:'native',config:{enabled:true}}]});
